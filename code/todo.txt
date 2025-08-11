@@ -1,0 +1,6 @@
+# todo
+
+# vandaag (of morgen)
+- van links naar rechts lopen over een vlakke vloer
+    - level met vlakke vloer
+    - animatie van lopend poppetje
