@@ -1,5 +1,4 @@
 import pygame
-import pygame
 
 def sprites(spritesheet, sprite_size, frame_count):
     pygame.image.load(spritesheet).convert_alpha()

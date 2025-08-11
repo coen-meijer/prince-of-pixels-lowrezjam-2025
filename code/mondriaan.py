@@ -1,5 +1,7 @@
 import pygame
+import pygame.surface as surface
 import pygame.gfxdraw
+
 
 RESOLUTION = (64, 64)
 COLOR = (64, 64, 64)
@@ -42,7 +44,6 @@ class PofP:
             self.pos_y = (self.pos_y - 1) % RESOLUTION[1]
         if self.down_pressed:
             self.pos_y = (self.pos_y + 1) % RESOLUTION[1]
-
 
         pygame.gfxdraw.pixel(self.canvas, self.pos_x, self.pos_y, BLACK)
 #        print("3", self.canvas)
