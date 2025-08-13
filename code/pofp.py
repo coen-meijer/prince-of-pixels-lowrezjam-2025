@@ -88,7 +88,7 @@ class PofP:
         self.canvas = pygame.Surface(RESOLUTION)
         self.canvas.fill(COLOR)
         self.pos_x = 32 - 4
-        self.pos_y = 32 - 4
+        self.pos_y = 32 - 2
 #        self.up_pressed = False
 #        self.down_pressed = False
 #        self.left_pressed = False
