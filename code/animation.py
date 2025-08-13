@@ -1,5 +1,4 @@
 import pygame
-import os
 # preconditions: state buttons space
 
 MASK_FOLDER = "masks"
@@ -84,3 +83,10 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
 
     print("from file", sprite_sheet_file, "generated", len(frames))
     return Animation(record, sprites=frames)
+
+def load_mask(filename, file_extension=".png"):
+    return pygame.image.load(os.join(MASK_FOLDER, filename + file_extension))
+
+def find_frame_size(sheet):
+    upper_left_corner_mask = load_mask("upper-left-frame-corner")
+    lower_right_corner_mask = load_mask("lower-right-frame-corner")
