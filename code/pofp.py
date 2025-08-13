@@ -35,10 +35,10 @@ class PofP:
 
     def frame(self, input):
         for event in input:
-            print("event:", event)
+            #print("event:", event)
             if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                 key_down = (event.type == pygame.KEYDOWN)
-                print(key_down, event.key)
+                # print(key_down, event.key)
                 if event.key == pygame.K_LEFT:
                     if key_down:
                         self.buttons_pressed.add("left")
@@ -50,20 +50,16 @@ class PofP:
                     else:
                         self.buttons_pressed.remove("right")
 
-        print(self.buttons_pressed)
+        #print(self.buttons_pressed)
 
         if self.choose_next_animation:
-            print("new animation starts!")
+            #print("new animation starts!")
             state = self.currend_animation_player.animation.end_state
-            print("state:", state, ", buttons:", self.buttons_pressed)
+            #print("state:", state, ", buttons:", self.buttons_pressed)
             for animation in self.animations:
-                print("concidering '", animation.name, "', state_needed:", state )
                 if state == animation.start_state:   # check state
-                    print("state checks out, buttons pressed:", self.buttons_pressed )
                     if self.buttons_pressed == animation.buttons:
-                        print("chosen:", animation.name)
                         self.currend_animation_player = animation.get_frame_iterator()
-            print(self.currend_animation_player.animation.name)
 
  #       print(self.currend_animation_player.animation.name,
  #             self.currend_animation_player.frame_index,
@@ -73,6 +69,5 @@ class PofP:
 
         self.canvas.fill(COLOR)
         self.canvas.blit(frame, (self.pos_x, self.pos_y))
-
 
         return self.canvas

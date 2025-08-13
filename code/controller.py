@@ -6,9 +6,11 @@ from boolfield import BoolField
 #class controller reader
 
 controller_layout = [
-    " u  b",
-    "l r  ",
-    " d  a"
+    "       ",
+    "  u  b ",
+    " l r   ",
+    "  d  a ",
+    "       "
 ]
 
 
