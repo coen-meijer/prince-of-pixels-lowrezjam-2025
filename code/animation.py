@@ -79,6 +79,10 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
         sprite_size = found_sizes[0]
         record["frame_size"] = sprite_size
         pos_x += sprite_size[0]
+        if pos_x + sheet_horizontal> sheet_horizontal:
+*            print("*** dit was het ***")
+            pos_x = 0
+            pos_y += sprite_size[1]
     else:
         print("no frame corner recognized for animation", record["name"])
         sprite_size = record["frame_size"]

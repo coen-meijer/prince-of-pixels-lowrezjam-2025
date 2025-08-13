@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pygame
 import pygame.surfarray as surfarray
 import numpy as np
