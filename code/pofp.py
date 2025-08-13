@@ -2,16 +2,17 @@ import pygame
 import pygame.gfxdraw
 from pygame import surface
 
-import animation
-from animation import Animation
+import code.animation
+from code.animation import Animation
 
 RESOLUTION = (64, 64)
 COLOR = (127, 127, 127)
 BLACK = (0, 0, 0)
 
-ANIMATION_FOLDER =  "../animaties"
+ANIMATION_FOLDER =  "animaties"
 
-TURN = ANIMATION_FOLDER + "/lowrez-short-turn-step.png"
+#TURN = ANIMATION_FOLDER + "/lowrez-short-turn-step.png"
+TURN = ANIMATION_FOLDER + "/turn(2).png"
 WALK = ANIMATION_FOLDER + "/lowrez-short-walk(2).png"
 STAND = ANIMATION_FOLDER + "/stand.png"
 
@@ -46,8 +47,8 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_right",
             "sprite_sheet": TURN,
             "frame_size": (8,8),
-            "frame_count": 8,
-            "mirrored": False
+            "frame_count": 4,
+            "mirrored": True
         },
         {
             "name": "turn_left",
@@ -56,8 +57,8 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_left",
             "sprite_sheet": TURN,
             "frame_size": (8,8),
-            "frame_count": 8,
-            "mirrored": True
+            "frame_count": 4,
+            "mirrored": False
         },
         {
             "name": "step_right",

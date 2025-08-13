@@ -1,6 +1,6 @@
 import pygame, sys
 
-from pofp import PofP
+from code.pofp import PofP
 
 import random
 import os
