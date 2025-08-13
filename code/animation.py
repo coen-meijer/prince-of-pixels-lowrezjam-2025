@@ -1,5 +1,8 @@
 import pygame
+import os
 # preconditions: state buttons space
+
+MASK_FOLDER = "masks"
 
 class AnimationPlayer:
 
@@ -18,7 +21,7 @@ class AnimationPlayer:
 
 class Animation:
 
-    def __init__(self, record):
+    def __init__(self, record, sprites=None):
         self.name= record["name"]
         self.start_state = record["start_state"]
         self.buttons = record["buttons"]
@@ -27,9 +30,12 @@ class Animation:
         self.mirrored = record["mirrored"]
         self.frame_count =record["frame_count"]
 
-        self.sprites = sprites_from_sheet(record["sprite_sheet"],
-                                          record["frame_size"],
-                                          record["frame_count"])
+        if sprites is None:
+            self.sprites = sprites_from_sheet(record["sprite_sheet"],
+                                              record["frame_size"],
+                                              record["frame_count"])
+        else:
+            self.sprites = sprites
 
     def get_frame_iterator(self):
         return AnimationPlayer(self)
@@ -54,3 +60,27 @@ def sprites_from_sheet(sprite_sheet_file, sprite_size, frame_count):
 
     print("from file", sprite_sheet_file, "generated", len(frames))
     return frames
+
+
+def animation_from_annotated_sheet(sprite_sheet_file, record={}):
+    sprite_sheet = pygame.image.load(sprite_sheet_file).convert_alpha()
+#    record["frame_size"] = find_frame_size(sprite_sheet)  # TODO: implement
+    frames = []
+    sprite_size = record["frame_size"]  # TODO: CHANGE TO SOMETHING REGOCNIZED
+    frame_count = record["frame_count"]
+    sheet_horizontal, sheet_vertical = sprite_sheet.get_size()
+    sprite_horizontal, sprite_vertical = sprite_size
+    pos_x, pos_y = 0, 0
+    for i in range(frame_count):
+        rect = pygame.Rect((pos_y, pos_x), sprite_size)
+        print("trying to cut out frame: ", sprite_sheet, rect)
+        frame = sprite_sheet.subsurface(rect)
+        frames.append(frame.copy())
+
+        pos_x += sprite_horizontal
+        if pos_x + sheet_horizontal> sheet_horizontal:
+            pos_x = 0
+            pos_y += sprite_vertical
+
+    print("from file", sprite_sheet_file, "generated", len(frames))
+    return Animation(record, sprites=frames)

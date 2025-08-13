@@ -3,7 +3,9 @@ import pygame.gfxdraw
 from pygame import surface
 
 import code.animation
+from code.animation import animation_from_annotated_sheet
 from code.animation import Animation
+from code.animation_state_machine import ANIMAION_STATE_MACHINE
 
 RESOLUTION = (64, 64)
 COLOR = (127, 127, 127)
@@ -16,7 +18,7 @@ TURN = ANIMATION_FOLDER + "/turn(2).png"
 WALK = ANIMATION_FOLDER + "/lowrez-short-walk(2).png"
 STAND = ANIMATION_FOLDER + "/stand.png"
 
-ANIMAION_STATE_MACHINE = {
+NOT_ANIMAION_STATE_MACHINE = {
     "states" : ["standing", "facing_left", "facing_right"],
     "first_state": "facing_right",
     "animations": [
@@ -100,7 +102,9 @@ class PofP:
 
         self.animations = []
         for animation_info in ANIMAION_STATE_MACHINE["animations"]:
-            self.animations.append(Animation(animation_info))
+            # self.animations.append(Animation(animation_info))
+            self.animations.append(animation_from_annotated_sheet(
+                animation_info["sprite_sheet"], record=animation_info))
         self.currend_animation_player = self.animations[0].get_frame_iterator()
 
     def frame(self, input):
