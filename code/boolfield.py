@@ -19,7 +19,7 @@ class BoolField:
         return BoolField(np.logical_xor(self.array, other.array))
 
     def window(self, offset, shape) -> "BoolField":
-        slice = self.array[ offset[0]:offset[0] + shape[0], offset[1]:offset[1] + shape[1]]
+        slice = self.array[ offset[1]:offset[1] + shape[1], offset[0]:offset[0] + shape[0]]
         return BoolField(slice)
 
     def negative(self) -> "BoolField":
@@ -39,14 +39,14 @@ class BoolField:
 
         for i in range(self_rows - pattern_rows + 1):
             for j in range(self_cols - pattern_cols + 1):
-                area = self.array[i:i+pattern_rows, j:j+pattern_cols]
+                area = self.array[j:j+pattern_cols, i:i+pattern_rows]   # colums first order!
                 if debug:
                     print("_________________________________")
                     print(j, j)
                     print(area)
                     print(pattern)
                 if np.array_equal(area, pattern.array):
-                    matches.append((i,  j))
+                    matches.append((j,  i))  # colums first order!
                     print("recognizes pattern")
 
         return matches

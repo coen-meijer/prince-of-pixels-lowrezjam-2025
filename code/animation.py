@@ -79,23 +79,24 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
         sprite_size = found_sizes[0]
         record["frame_size"] = sprite_size
         pos_x += sprite_size[0]
-        if pos_x + sheet_horizontal> sheet_horizontal:
-*            print("*** dit was het ***")
-            pos_x = 0
-            pos_y += sprite_size[1]
+        if pos_x + sprite_size[0]> sheet_horizontal:
+            print("*** dit was het ***")
+            pos_x += sprite_size[0]
+            pos_y = 0
     else:
         print("no frame corner recognized for animation", record["name"])
         sprite_size = record["frame_size"]
     sprite_horizontal, sprite_vertical = sprite_size
 
     for i in range(frame_count):
-        rect = pygame.Rect((pos_y, pos_x), sprite_size)
+        rect = pygame.Rect((pos_x, pos_y), sprite_size)
         print("trying to cut out frame: ", sprite_sheet, rect)
         frame = sprite_sheet.subsurface(rect)
+        print(frame)
         frames.append(frame.copy())
 
         pos_x += sprite_horizontal
-        if pos_x + sheet_horizontal> sheet_horizontal:
+        if pos_x + sprite_horizontal> sheet_horizontal:
             pos_x = 0
             pos_y += sprite_vertical
 
