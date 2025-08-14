@@ -17,7 +17,7 @@ ANIMAION_STATE_MACHINE = {
             "buttons": set(),
             "end_state": "facing_right",
             "sprite_sheet": STAND,
-            "frame_size": (8, 8),
+#            "frame_size": (8, 8),
             "frame_count": 1,
             "mirrored": False
         },
@@ -27,7 +27,7 @@ ANIMAION_STATE_MACHINE = {
             "buttons": set(),
             "end_state": "facing_left",
             "sprite_sheet": STAND,
-            "frame_size": (8, 8),
+#            "frame_size": (8, 8),
             "frame_count": 1,
             "mirrored": True
         },
@@ -37,7 +37,7 @@ ANIMAION_STATE_MACHINE = {
             "buttons": {"right"},
             "end_state": "facing_right",
             "sprite_sheet": TURN,
-            "frame_size": (8,8),
+#            "frame_size": (8,8),
             "frame_count": 4,
             "mirrored": True
         },
@@ -47,7 +47,7 @@ ANIMAION_STATE_MACHINE = {
             "buttons": {"left"},
             "end_state": "facing_left",
             "sprite_sheet": TURN,
-            "frame_size": (8,8),
+#            "frame_size": (8,8),
             "frame_count": 4,
             "mirrored": False
         },
@@ -57,7 +57,7 @@ ANIMAION_STATE_MACHINE = {
             "buttons": {"right"},
             "end_state": "facing_right",
             "sprite_sheet": WALK,
-            "frame_size": (8, 8),
+#            "frame_size": (8, 8),
             "frame_count": 4,
             "mirrored": False
         },
@@ -67,7 +67,7 @@ ANIMAION_STATE_MACHINE = {
             "buttons": {"left"},
             "end_state": "facing_left",
             "sprite_sheet": WALK,
-            "frame_size": (8, 8),
+#            "frame_size": (8, 8),
             "frame_count": 4,
             "mirrored": True
         },
