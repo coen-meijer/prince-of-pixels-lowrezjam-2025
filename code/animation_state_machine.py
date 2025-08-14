@@ -3,9 +3,9 @@ import os
 #TURN = ANIMATION_FOLDER + "/lowrez-short-turn-step.png"
 ANIMATION_FOLDER =  "animaties"
 
-TURN = os.path.join(ANIMATION_FOLDER, "turn-frame-tall.png")
-WALK = os.path.join(ANIMATION_FOLDER, "lowrez-short-walk(2).png")
-STAND = os.path.join(ANIMATION_FOLDER, "stand.png")
+TURN = os.path.join(ANIMATION_FOLDER, "turn-framed.png")
+WALK = os.path.join(ANIMATION_FOLDER, "walk-framed.png")
+STAND = os.path.join(ANIMATION_FOLDER, "stand-framed.png")
 
 ANIMAION_STATE_MACHINE = {
     "states" : ["standing", "facing_left", "facing_right"],

@@ -43,6 +43,12 @@ class Animation:
     def get_frame_iterator(self):
         return AnimationPlayer(self)
 
+class SpriteSheetCutter:
+
+    def __init__(self, sheet, frame_size, start_frame=0):
+        self.sheet = sheet
+        self.frame_size = framesize
+
 
 def sprites_from_sheet(sprite_sheet_file, sprite_size, frame_count):
     sprite_sheet = pygame.image.load(sprite_sheet_file).convert_alpha()
@@ -80,8 +86,8 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
         record["frame_size"] = sprite_size
         pos_x += sprite_size[0]
         if pos_x + sprite_size[0]> sheet_horizontal:
-            pos_x += sprite_size[0]
-            pos_y = 0
+            pos_x = 0
+            pos_y += sprite_size[1]
     else:
         print("no frame corner recognized for animation", record["name"])
         sprite_size = record["frame_size"]
@@ -97,7 +103,7 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
         pos_x += sprite_horizontal
         if pos_x + sprite_horizontal> sheet_horizontal:
             pos_x = 0
-            pos_y += sprite_vertical
+            pos_y += sprite_size[1]
 
     print("from file", sprite_sheet_file, "generated", len(frames))
     return Animation(record, sprites=frames)
