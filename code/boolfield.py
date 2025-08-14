@@ -19,7 +19,7 @@ class BoolField:
         return BoolField(np.logical_xor(self.array, other.array))
 
     def window(self, offset, shape) -> "BoolField":
-        slice = self.array[ offset[1]:offset[1] + shape[1], offset[0]:offset[0] + shape[0]]
+        slice = self.array[ offset[0]:offset[0] + shape[0], offset[1]:offset[1] + shape[1]]
         return BoolField(slice)
 
     def negative(self) -> "BoolField":

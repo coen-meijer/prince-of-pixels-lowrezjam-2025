@@ -80,7 +80,6 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
         record["frame_size"] = sprite_size
         pos_x += sprite_size[0]
         if pos_x + sprite_size[0]> sheet_horizontal:
-            print("*** dit was het ***")
             pos_x += sprite_size[0]
             pos_y = 0
     else:
