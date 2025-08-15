@@ -72,22 +72,25 @@ def sprites_from_sheet(sprite_sheet_file, sprite_size, frame_count):
 
 
 def animation_from_annotated_sheet(sprite_sheet_file, record={}):
+    print("======", record["name"], "=====")
     sprite_sheet = pygame.image.load(sprite_sheet_file).convert_alpha()
+    sprite_sheet_mask = boolfield.opaque(sprite_sheet)
     frames = []
     frame_count = record["frame_count"]
     sheet_horizontal, sheet_vertical = sprite_sheet.get_size()
     pos_x, pos_y = 0, 0
 
     # frame size
-    found_sizes = find_frame_size_list(sprite_sheet)
-    if len(found_sizes) > 0:
-        print("recognized frame sizes:", found_sizes)
-        sprite_size = found_sizes[0]
-        record["frame_size"] = sprite_size
-        pos_x += sprite_size[0]
-        if pos_x + sprite_size[0]> sheet_horizontal:
-            pos_x = 0
-            pos_y += sprite_size[1]
+#    found_sizes = find_frame_size_list(sprite_sheet)
+    sprite_size = observe_framesize(sprite_sheet, record, sprite_sheet_mask)
+#    if len(found_sizes) > 0:
+#        print("recognized frame sizes:", found_sizes)
+#        sprite_size = found_sizes[0]
+#        record["frame_size"] = sprite_size
+    pos_x += sprite_size[0]
+    if pos_x + sprite_size[0]> sheet_horizontal:
+        pos_x = 0
+        pos_y += sprite_size[1]
     else:
         print("no frame corner recognized for animation", record["name"])
         sprite_size = record["frame_size"]
@@ -113,6 +116,12 @@ def load_mask(filename, file_extension=".png"):
     return boolfield.opaque(pygame.image.load(
         os.path.join(MASK_FOLDER, filename + file_extension)
     ))
+
+
+def observe_framesize(spritesheet, sprite_info, opaque=None):
+    frame_size = find_frame_size_list(spritesheet, opaque=opaque)[0]
+    sprite_info["frame_size"] = frame_size
+    return frame_size
 
 
 def find_frame_size_list(sheet, opaque=None):
