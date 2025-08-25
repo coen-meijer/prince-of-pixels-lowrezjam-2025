@@ -106,19 +106,19 @@ def load_mask(filename, file_extension=".png"):
     ))
 
 
-def find_frame_size_list(sheet, opaque=None, debug=False):
-    if opaque is None:
-        opaque = boolfield.opaque(sheet)
-    lower_right_corner_mask = load_mask("lower-right-frame-corner")
-    if debug:
-        print(opaque.array.shape)
-        print(lower_right_corner_mask.array)
-        print(lower_right_corner_mask.array.shape)
-        print(lower_right_corner_mask.size())
-    corners = opaque.find(lower_right_corner_mask)
-    mask_size = lower_right_corner_mask.size()
-    return [(lower_right[0] + mask_size[0], lower_right[1] + mask_size[1]) for
-            lower_right in corners]
+#def find_frame_size_list(sheet, opaque=None, debug=False):
+#    if opaque is None:
+#        opaque = boolfield.opaque(sheet)
+#    lower_right_corner_mask = load_mask("lower-right-frame-corner")
+#    if debug:
+#        print(opaque.array.shape)
+#        print(lower_right_corner_mask.array)
+#        print(lower_right_corner_mask.array.shape)
+#        print(lower_right_corner_mask.size())
+#    corners = opaque.find(lower_right_corner_mask)
+#    mask_size = lower_right_corner_mask.size()
+#    return [(lower_right[0] + mask_size[0], lower_right[1] + mask_size[1]) for
+#            lower_right in corners]
 
 def find_frame_size(sheet, info):
     lower_right_corner_mask = load_mask("lower-right-frame-corner")
