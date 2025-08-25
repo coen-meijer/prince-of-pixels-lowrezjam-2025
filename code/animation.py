@@ -73,27 +73,16 @@ def sprites_from_sheet(sprite_sheet_file, sprite_size, frame_count):
 
 def animation_from_annotated_sheet(sprite_sheet_file, record={}):
     sprite_sheet = pygame.image.load(sprite_sheet_file).convert_alpha()
+    record["opaque"] = boolfield.opaque(sprite_sheet)
     frames = []
     frame_count = record["frame_count"]
     sheet_horizontal, sheet_vertical = sprite_sheet.get_size()
     pos_x, pos_y = 0, 0
 
-    # frame size
-    found_sizes = find_frame_size_list(sprite_sheet)
-    if len(found_sizes) > 0:
-        print("recognized frame sizes:", found_sizes)
-        sprite_size = found_sizes[0]
-        record["frame_size"] = sprite_size
-        pos_x += sprite_size[0]
-        if pos_x + sprite_size[0]> sheet_horizontal:
-            pos_x = 0
-            pos_y += sprite_size[1]
-    else:
-        print("no frame corner recognized for animation", record["name"])
-        sprite_size = record["frame_size"]
+    sprite_size = find_frame_size(sprite_sheet, record)
     sprite_horizontal, sprite_vertical = sprite_size
 
-    for i in range(frame_count):
+    for i in range(frame_count + 1):   # skip start frame
         rect = pygame.Rect((pos_x, pos_y), sprite_size)
         print("trying to cut out frame: ", sprite_sheet, rect)
         frame = sprite_sheet.subsurface(rect)
@@ -105,6 +94,7 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
             pos_x = 0
             pos_y += sprite_size[1]
 
+    frames = frames[1:]   # skip start frame
     print("from file", sprite_sheet_file, "generated", len(frames))
     return Animation(record, sprites=frames)
 
@@ -126,6 +116,18 @@ def find_frame_size_list(sheet, opaque=None):
     mask_size = lower_right_corner_mask.size()
     return [(lower_right[0] + mask_size[0], lower_right[1] + mask_size[1]) for
             lower_right in corners]
+
+def find_frame_size(sheet, info):
+    lower_right_corner_mask = load_mask("lower-right-frame-corner")
+    opaque = info["opaque"]
+    corners = opaque.find(lower_right_corner_mask)
+    if not len(corners) == 1:
+        raise ValueError(f"The number of corners registered is {len(corners)}, shoule be 1")
+    corner = corners[0]
+    frame_size = (corner[0] + lower_right_corner_mask.size()[0], corner[1] + lower_right_corner_mask.size()[1])
+    info["frame_size"] = frame_size
+    return frame_size
+
 
 
 CONTROLLER_LAYOUT = [
