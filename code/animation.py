@@ -80,6 +80,7 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
     pos_x, pos_y = 0, 0
 
     sprite_size = find_frame_size(sprite_sheet, record)
+
     sprite_horizontal, sprite_vertical = sprite_size
 
     for i in range(frame_count + 1):   # skip start frame
@@ -105,13 +106,15 @@ def load_mask(filename, file_extension=".png"):
     ))
 
 
-def find_frame_size_list(sheet, opaque=None):
+def find_frame_size_list(sheet, opaque=None, debug=False):
     if opaque is None:
         opaque = boolfield.opaque(sheet)
     lower_right_corner_mask = load_mask("lower-right-frame-corner")
-    print(lower_right_corner_mask.array)
-    print(lower_right_corner_mask.array.shape)
-    print(lower_right_corner_mask.size())
+    if debug:
+        print(opaque.array.shape)
+        print(lower_right_corner_mask.array)
+        print(lower_right_corner_mask.array.shape)
+        print(lower_right_corner_mask.size())
     corners = opaque.find(lower_right_corner_mask)
     mask_size = lower_right_corner_mask.size()
     return [(lower_right[0] + mask_size[0], lower_right[1] + mask_size[1]) for
