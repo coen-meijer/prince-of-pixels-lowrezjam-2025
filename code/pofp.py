@@ -29,8 +29,10 @@ class PofP:
         self.animations = []
         for animation_info in ANIMAION_STATE_MACHINE["animations"]:
             # self.animations.append(Animation(animation_info))
-            self.animations.append(animation_from_annotated_sheet(
-                animation_info["sprite_sheet"], record=animation_info))
+            new_animation = animation_from_annotated_sheet(
+                animation_info["sprite_sheet"], record=animation_info)
+            self.animations.append(new_animation)
+            self.animations.append(new_animation.mirror())
         self.currend_animation_player = self.animations[0].get_frame_iterator()
 
     def frame(self, input):

@@ -1,3 +1,5 @@
+import copy
+
 import pygame
 from code import boolfield
 from code.boolfield import BoolField
@@ -30,7 +32,7 @@ class Animation:
         self.buttons = record["buttons"]
         self.end_state= record["end_state"]
         self.name= record["name"]
-        self.mirrored = record["mirrored"]
+        self.mirrored = False    #  record["mirrored"]
         self.frame_count =record["frame_count"]
 
         if sprites is None:
@@ -42,6 +44,26 @@ class Animation:
 
     def get_frame_iterator(self):
         return AnimationPlayer(self)
+
+    def mirror(self):
+        result = copy.copy(self)
+        result.name = self.name + "-mirrored"
+        result.start_state = mirror_state(self.start_state)
+        result.end_state = mirror_state(self.end_state)
+        result.mirrored = not self.mirrored
+        result.buttons = mirror_buttons(self.buttons)
+        return result
+
+def mirror_buttons(buttons):
+    result = set()
+    for button in buttons:
+        if button == "left":
+            result.add("right")
+        elif button == "right":
+            result.add("left")
+        else:
+            result.add(button)
+    return result
 
 class SpriteSheetCutter:
 
@@ -124,6 +146,17 @@ def find_frame_size(sheet, info):
     frame_size = (corner[0] + lower_right_corner_mask.size()[0], corner[1] + lower_right_corner_mask.size()[1])
     info["frame_size"] = frame_size
     return frame_size
+
+
+def mirror_state(state):
+    if isinstance(state, str):
+        if state == "facing_left":
+            return "facing_right"
+        elif state == "facing_right":
+            return "facing_left"
+        else:
+            raise ValueError(f"cant mirror state'{state}'")
+    raise ValueError(f"{state} is not a string, and I can't handle that yet.")
 
 
 
