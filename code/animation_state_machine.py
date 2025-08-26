@@ -18,7 +18,7 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_right",
             "sprite_sheet": STAND,
 #            "frame_size": (8, 8),
-            "frame_count": 1,
+#            "frame_count": 1,
             "mirrored": False
         },
         {
@@ -28,7 +28,7 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_left",
             "sprite_sheet": STAND,
 #            "frame_size": (8, 8),
-            "frame_count": 1,
+#            "frame_count": 1,
             "mirrored": True
         },
         {
@@ -38,7 +38,7 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_right",
             "sprite_sheet": TURN,
 #            "frame_size": (8,8),
-            "frame_count": 4,
+#            "frame_count": 4,
             "mirrored": True
         },
         {
@@ -48,7 +48,7 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_left",
             "sprite_sheet": TURN,
 #            "frame_size": (8,8),
-            "frame_count": 4,
+#            "frame_count": 4,
             "mirrored": False
         },
         {
@@ -58,7 +58,7 @@ ANIMAION_STATE_MACHINE = {
             "end_state": "facing_right",
             "sprite_sheet": WALK,
 #            "frame_size": (8, 8),
-            "frame_count": 4,
+#            "frame_count": 4,
             "mirrored": False
         },
         {

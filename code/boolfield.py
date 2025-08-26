@@ -56,10 +56,10 @@ class BoolField:
     def size(self):
         return self.array.shape
 
-    def exists(self)  -> bool:
+    def any(self)  -> bool:
         return self.array.any()
 
-    def universal(self)  -> bool:
+    def all(self)  -> bool:
         return self.array.all()
 
 # end of the class. Some functions to create BoolFields
