@@ -12,21 +12,21 @@ ANIMAION_STATE_MACHINE = {
     "first_state": "facing_right",
     "animations": [
         {
-            "name": "standing_facing_right",
+            "name": "standing",
             "start_state": "facing_right",
             "buttons": set(),
             "end_state": "facing_right",
             "sprite_sheet": STAND,
         },
         {
-            "name": "turn_left",
+            "name": "turn",
             "start_state": "facing_right",
             "buttons": {"left"},
             "end_state": "facing_left",
             "sprite_sheet": TURN,
         },
         {
-            "name": "step_right",
+            "name": "step",
             "start_state": "facing_right",
             "buttons": {"right"},
             "end_state": "facing_right",

@@ -9,6 +9,9 @@ import os
 
 MASK_FOLDER = "masks"
 
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
 class AnimationPlayer:
 
     def __init__(self, animation):
