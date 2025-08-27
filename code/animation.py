@@ -57,6 +57,18 @@ class Animation:
         result.buttons = mirror_buttons(self.buttons)
         return result
 
+
+def mirror_state(state):
+    if isinstance(state, str):
+        if state == "facing_left":
+            return "facing_right"
+        elif state == "facing_right":
+            return "facing_left"
+        else:
+            raise ValueError(f"cant mirror state'{state}'")
+    raise ValueError(f"{state} is not a string, and I can't handle that yet.")
+
+
 def mirror_buttons(buttons):
     result = set()
     for button in buttons:
@@ -151,17 +163,6 @@ def find_frame_size(sheet, info):
     return frame_size
 
 
-def mirror_state(state):
-    if isinstance(state, str):
-        if state == "facing_left":
-            return "facing_right"
-        elif state == "facing_right":
-            return "facing_left"
-        else:
-            raise ValueError(f"cant mirror state'{state}'")
-    raise ValueError(f"{state} is not a string, and I can't handle that yet.")
-
-
 
 CONTROLLER_LAYOUT = [
     "       ",
@@ -171,8 +172,33 @@ CONTROLLER_LAYOUT = [
     "       "
 ]
 
-def read_controller():
+BUTTON_NAMES = {
+    "l": "left",
+    "r": "right",
+    "u": "up",
+    "d": "down",
+    "a": "a_button",
+    "b": "b:button",
+}
+
+def read_controller(sheet, info):
+    layout = boolfield.is_char(CONTROLLER_LAYOUT, " ").inverse()
+    opaque = info["opaque"]
+    positions = opaque.find(layout)
+    if len(positions) != 1:
+        raise ValueError(f"Found {len(positions)} poitions for the controller mask, hoped to find just 1.")
     pass
+    rect = pygame.Rect(positions[0], layout.size())
+    controller_patch = pygame.Surface.subsurface(sheet, rect)
+        # sheet[positions[0][0]:positions[0][0] + layout.size()[0],
+        #                     positions[0][1]:positions[0][1] + layout.size()[1]]
+    buttons_pressed = set()
+    for letter, button in BUTTON_NAMES.items():
+        index = boolfield.is_char(CONTROLLER_LAYOUT, "letter")
+        button_pixel = controller_patch[index.array][0]  # how do i extract the pixel color?
+        # take a look at pygame.mask
+
+
 
 
 def strings2array(strings):

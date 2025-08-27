@@ -19,7 +19,7 @@ class BoolField:
         return BoolField(np.logical_xor(self.array, other.array))
 
     def window(self, offset, shape) -> "BoolField":
-        slice = self.array[ offset[0]:offset[0] + shape[0], offset[1]:offset[1] + shape[1]]
+        slice = self.array[offset[0]:offset[0] + shape[0], offset[1]:offset[1] + shape[1]]
         return BoolField(slice)
 
     def negative(self) -> "BoolField":
@@ -83,9 +83,9 @@ def is_color(surf, color) -> BoolField:
     elif isinstance(color, str):
         if color[0] == '#':
             color = color[1:]
-        r = int(color_hex[0:2], 16)
-        g = int(color_hex[2:4], 16)
-        b = int(color_hex[4:6], 16)
+        r = int(color[0:2], 16)
+        g = int(color[2:4], 16)
+        b = int(color[4:6], 16)
         color_array = np.array([r, g, b])
         surface_colors = surfarray.pixels3d(surf)
         boolarray = np.all(surface_colors[0:3] == color and surface_colors[3] !=0, axix=2)
@@ -102,7 +102,7 @@ def is_char(charfield, match_char) -> BoolField:
     for line_no, line in enumerate(lines):
         for col_no, character in enumerate(line):
             array[line_no, col_no] = (character == char)
-    return BoolField(array)
+    return BoolField(array).transpose()    # we need a transpose?
 
 def boolfieldtest():
      pattern = is_char(["***", "* *", "***"], '*')
