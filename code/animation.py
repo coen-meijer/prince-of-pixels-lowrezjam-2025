@@ -65,7 +65,7 @@ def mirror_state(state):
         elif state == "facing_right":
             return "facing_left"
         else:
-            raise ValueError(f"cant mirror state'{state}'")
+            raise ValueError(f"can't mirror state'{state}'")
     raise ValueError(f"{state} is not a string, and I can't handle that yet.")
 
 
@@ -109,6 +109,7 @@ def sprites_from_sheet(sprite_sheet_file, sprite_size, frame_count):
 
 
 def animation_from_annotated_sheet(sprite_sheet_file, record={}):
+    print(f"reading sheet ======= {record['name']} =======")
     sprite_sheet = pygame.image.load(sprite_sheet_file).convert_alpha()
     record["opaque"] = boolfield.opaque(sprite_sheet)
     frames = []
@@ -119,7 +120,14 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
 
     sprite_horizontal, sprite_vertical = sprite_size
 
-    more_frames = True
+    try:
+        buttons_pressed = read_controller(sprite_sheet, record)
+        print("COULD find the controller!")
+        record["buttons"] = buttons_pressed
+    except ValueError as err:
+        print("couldn't find the controller.", err)
+
+#    more_frames = True
 
     while(True):
         rect = pygame.Rect((pos_x, pos_y), sprite_size)
@@ -156,12 +164,11 @@ def find_frame_size(sheet, info):
     opaque = info["opaque"]
     corners = opaque.find(lower_right_corner_mask)
     if not len(corners) == 1:
-        raise ValueError(f"The number of corners registered is {len(corners)}, shoule be 1")
+        raise ValueError(f"The number of corners registered is {len(corners)}, should be 1")
     corner = corners[0]
     frame_size = (corner[0] + lower_right_corner_mask.size()[0], corner[1] + lower_right_corner_mask.size()[1])
     info["frame_size"] = frame_size
     return frame_size
-
 
 
 CONTROLLER_LAYOUT = [
@@ -178,27 +185,35 @@ BUTTON_NAMES = {
     "u": "up",
     "d": "down",
     "a": "a_button",
-    "b": "b:button",
+    "b": "b_button",
 }
 
 def read_controller(sheet, info):
-    layout = boolfield.is_char(CONTROLLER_LAYOUT, " ").inverse()
+    print("in read_controller!")
+    layout = boolfield.is_char(CONTROLLER_LAYOUT, " ").negative()
+    print(layout)
     opaque = info["opaque"]
+    print(opaque)
     positions = opaque.find(layout)
     if len(positions) != 1:
         raise ValueError(f"Found {len(positions)} poitions for the controller mask, hoped to find just 1.")
-    pass
+
     rect = pygame.Rect(positions[0], layout.size())
     controller_patch = pygame.Surface.subsurface(sheet, rect)
         # sheet[positions[0][0]:positions[0][0] + layout.size()[0],
         #                     positions[0][1]:positions[0][1] + layout.size()[1]]
     buttons_pressed = set()
     for letter, button in BUTTON_NAMES.items():
+        print("in loop")
         index = boolfield.is_char(CONTROLLER_LAYOUT, "letter")
-        button_pixel = controller_patch[index.array][0]  # how do i extract the pixel color?
-        # take a look at pygame.mask
-
-
+        print(letter)
+        print(index)
+        button_pixel_color = controller_patch[index.array][0]  # how do i extract the pixel color?
+        print(f"The color of the button {button} is {button_pixel_color}")
+        if button_pixel_color == WHITE:
+            buttons_pressed.append()
+        # take a look at pygame.mask - <later>  not quite what i needed
+    return buttons_pressed
 
 
 def strings2array(strings):

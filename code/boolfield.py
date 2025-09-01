@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 import pygame
 import pygame.surfarray as surfarray
 import numpy as np
@@ -32,7 +34,7 @@ class BoolField:
         return np.count_nonzero(self.array)
 
     def find(self, pattern) -> list[tuple[int, int]]:
-        debug = False
+        debug = True
         matches = []
         self_rows, self_cols = self.array.shape
         pattern_rows, pattern_cols = pattern.array.shape
@@ -61,6 +63,17 @@ class BoolField:
 
     def all(self)  -> bool:
         return self.array.all()
+
+    def __str__(self):
+        result = ''
+        for row in self.array.transpose():
+            for value in row:
+                if value:
+                    result += "#"
+                else:
+                    result += "."
+            result += (os.linesep)
+        return result
 
 # end of the class. Some functions to create BoolFields
 
@@ -101,8 +114,8 @@ def is_char(charfield, match_char) -> BoolField:
     array = np.full((horizontal, vertical), False)
     for line_no, line in enumerate(lines):
         for col_no, character in enumerate(line):
-            array[line_no, col_no] = (character == char)
-    return BoolField(array).transpose()    # we need a transpose?
+            array[col_no, line_no] = (character == match_char)
+    return BoolField(array)  #.transpose()    # we need a transpose?
 
 def boolfieldtest():
      pattern = is_char(["***", "* *", "***"], '*')
