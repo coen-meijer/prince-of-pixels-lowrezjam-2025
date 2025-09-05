@@ -9,6 +9,7 @@ import numpy as np
 class BoolField:
 
     def __init__(self, array):
+        assert array.dtype == bool
         self.array = array
 
     def logical_and(self, other)  -> "BoolField":
@@ -33,22 +34,23 @@ class BoolField:
     def count(self)  -> int:
         return np.count_nonzero(self.array)
 
-    def find(self, pattern) -> list[tuple[int, int]]:
-        debug = True
+    def find(self, pattern, debug=False) -> list[tuple[int, int]]:
         matches = []
-        self_rows, self_cols = self.array.shape
-        pattern_rows, pattern_cols = pattern.array.shape
+        self_cols, self_rows = self.array.shape
+        pattern_cols, pattern_rows = pattern.array.shape
+        if debug:
+            print(self)
 
-        for i in range(self_rows - pattern_rows + 1):
-            for j in range(self_cols - pattern_cols + 1):
-                area = self.array[j:j+pattern_cols, i:i+pattern_rows]   # colums first order!
+        for i in range(self_cols - pattern_cols + 1):
+            for j in range(self_rows - pattern_rows + 1):
+                area = self.array[i : i + pattern_cols, j : j + pattern_rows]   # colums first order!
                 if debug:
                     print("_________________________________")
-                    print(j, j)
-                    print(area)
+                    print(i, j)
+                    print(BoolField(area))
                     print(pattern)
                 if np.array_equal(area, pattern.array):
-                    matches.append((j,  i))  # colums first order!
+                    matches.append((i,  j))  # colums first order!
                     print("recognizes pattern")
 
         return matches
@@ -80,11 +82,13 @@ class BoolField:
 def opaque(surf, threshold=128) -> BoolField:
     alpha = surfarray.pixels_alpha(surf)
     boolarray = alpha >= threshold
-    return BoolField(surfarray.array_alpha(surf))
+    return BoolField(boolarray)
+
 
 def transparent(surf, threshold=127) -> BoolField:
     boolarray = surfarray.pixels_alpha(surf) <= threshold
     return BoolField(boolarray)
+
 
 def is_color(surf, color) -> BoolField:
     if isinstance(color, tuple):
@@ -104,7 +108,9 @@ def is_color(surf, color) -> BoolField:
         boolarray = np.all(surface_colors[0:3] == color and surface_colors[3] !=0, axix=2)
     return BoolField(boolarray)
 
+
 def is_char(charfield, match_char) -> BoolField:
+    assert len(match_char) == 1
     if isinstance(charfield, str):
         lines = charfield.splitlines()
     else:
@@ -114,11 +120,16 @@ def is_char(charfield, match_char) -> BoolField:
     array = np.full((horizontal, vertical), False)
     for line_no, line in enumerate(lines):
         for col_no, character in enumerate(line):
+            # print(f"letter: {character}, match_char: {match_char}, col_no: {col_no}, line_no: {line_no}, match: {match_char == character}")
             array[col_no, line_no] = (character == match_char)
     return BoolField(array)  #.transpose()    # we need a transpose?
 
+
 def boolfieldtest():
-     pattern = is_char(["***", "* *", "***"], '*')
+     pattern = is_char([" **", "* *", "***"], '*')
      print(pattern.find(pattern))
+
+if __name__ == "__main__":
+    boolfielstest()
 
 

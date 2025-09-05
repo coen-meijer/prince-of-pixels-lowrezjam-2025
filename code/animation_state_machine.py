@@ -11,6 +11,7 @@ ANIMAION_STATE_MACHINE = {
     "states" : ["standing", "facing_left", "facing_right"],
     "first_state": "facing_right",
     "animations": [
+
         {
             "name": "standing",
             "start_state": "facing_right",

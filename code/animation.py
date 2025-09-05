@@ -193,6 +193,7 @@ def read_controller(sheet, info):
     layout = boolfield.is_char(CONTROLLER_LAYOUT, " ").negative()
     print(layout)
     opaque = info["opaque"]
+    print("opaque:")
     print(opaque)
     positions = opaque.find(layout)
     if len(positions) != 1:
@@ -200,19 +201,23 @@ def read_controller(sheet, info):
 
     rect = pygame.Rect(positions[0], layout.size())
     controller_patch = pygame.Surface.subsurface(sheet, rect)
+    controller_patch_array = pygame.surfarray.pixels3d(controller_patch)
+    print(f"controller pach array is {controller_patch_array}")
         # sheet[positions[0][0]:positions[0][0] + layout.size()[0],
         #                     positions[0][1]:positions[0][1] + layout.size()[1]]
     buttons_pressed = set()
+
+
     for letter, button in BUTTON_NAMES.items():
         print("in loop")
-        index = boolfield.is_char(CONTROLLER_LAYOUT, "letter")
-        print(letter)
-        print(index)
-        button_pixel_color = controller_patch[index.array][0]  # how do i extract the pixel color?
+        index = boolfield.is_char(CONTROLLER_LAYOUT, letter)
+        print(f"letter: {letter}, index: {index}")
+        button_pixel_color = controller_patch_array[index.array][0]  # how do i extract the pixel color?
         print(f"The color of the button {button} is {button_pixel_color}")
-        if button_pixel_color == WHITE:
-            buttons_pressed.append()
+        if (button_pixel_color == WHITE):   #.all():
+            buttons_pressed.add(button)
         # take a look at pygame.mask - <later>  not quite what i needed
+    print(f"_____________________________buttons: {buttons_pressed}_______________________________________")
     return buttons_pressed
 
 
