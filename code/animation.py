@@ -150,6 +150,7 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
     frames = frames[1:]   # skip start frame
     record["frame_count"] = len(frames)
     print("from file", sprite_sheet_file, "generated", len(frames))
+    print("info:",record)
     return Animation(record, sprites=frames)
 
 
@@ -214,7 +215,7 @@ def read_controller(sheet, info):
         print(f"letter: {letter}, index: {index}")
         button_pixel_color = controller_patch_array[index.array][0]  # how do i extract the pixel color?
         print(f"The color of the button {button} is {button_pixel_color}")
-        if (button_pixel_color == WHITE):   #.all():
+        if (button_pixel_color == WHITE).all():
             buttons_pressed.add(button)
         # take a look at pygame.mask - <later>  not quite what i needed
     print(f"_____________________________buttons: {buttons_pressed}_______________________________________")

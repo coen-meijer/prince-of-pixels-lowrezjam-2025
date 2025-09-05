@@ -29,7 +29,7 @@ ANIMAION_STATE_MACHINE = {
         {
             "name": "step",
             "start_state": "facing_right",
-            "buttons": {"right"},
+#            "buttons": {"right"},
             "end_state": "facing_right",
             "sprite_sheet": WALK,
         },
