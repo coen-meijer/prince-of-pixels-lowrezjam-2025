@@ -1,6 +1,16 @@
 # todo
 
-# vandaag (of morgen)
 - van links naar rechts lopen over een vlakke vloer
     - level met vlakke vloer
     - animatie van lopend poppetje
+
+- informatie uit sprites
+    - erase masks!
+    - verplaatsing
+    - centrum
+    - steun punten
+    - ruimte voor animatie / collision
+    - snelhied keuze:
+        - snelhied
+            - is af te leiden uit de centrum markers(!)
+        - frames

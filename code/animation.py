@@ -12,6 +12,12 @@ MASK_FOLDER = "masks"
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
+
+
+# OPAQUE_WHITE = (255, 255, 255, 255)
+# OPAQUE_BLACK = (0, 0, 0, 255)
+# TRANSPARENT = (0, 0, 0, 0)
+
 class AnimationPlayer:
 
     def __init__(self, animation):
@@ -169,6 +175,8 @@ def find_frame_size(sheet, info):
     corner = corners[0]
     frame_size = (corner[0] + lower_right_corner_mask.size()[0], corner[1] + lower_right_corner_mask.size()[1])
     info["frame_size"] = frame_size
+    rectangle = pygame.Rect(corner[0], frame_size[0], corner[1], frame_size[1])
+    sheet.subsurface(rectangle).set_alpha(0)   # hopen dat dit werkt.
     return frame_size
 
 
@@ -201,7 +209,7 @@ def read_controller(sheet, info):
         raise ValueError(f"Found {len(positions)} poitions for the controller mask, hoped to find just 1.")
 
     rect = pygame.Rect(positions[0], layout.size())
-    controller_patch = pygame.Surface.subsurface(sheet, rect)
+    controller_patch = pygame.Surface.subsurface(sheet, rect).convert_alpha()
     controller_patch_array = pygame.surfarray.pixels3d(controller_patch)
     print(f"controller pach array is {controller_patch_array}")
         # sheet[positions[0][0]:positions[0][0] + layout.size()[0],
@@ -218,8 +226,27 @@ def read_controller(sheet, info):
         if (button_pixel_color == WHITE).all():
             buttons_pressed.add(button)
         # take a look at pygame.mask - <later>  not quite what i needed
-    print(f"_____________________________buttons: {buttons_pressed}_______________________________________")
+    # erase the buttons
+    print(controller_patch_array)
+    controller_patch.set_alpha(0)
+    print(f"_____________________________buttons: {buttons_pressed}_____________________________")
     return buttons_pressed
+
+
+# def rect2range(referent, offset, size):
+#    return reverent[]
+
+def find_center_marks(sprite, info):
+    sprite_opaque = boolfield.opaque(sprite)
+    for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
+        pass
+        #boolfield.()  # TODO: HIER VERDER
+
+
+
+
+def erase_mask(surface, position, mask):
+    srurface[position[0]: position]
 
 
 def strings2array(strings):
