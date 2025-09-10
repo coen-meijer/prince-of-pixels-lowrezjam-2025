@@ -237,12 +237,18 @@ def read_controller(sheet, info):
 #    return reverent[]
 
 def find_center_marks(sprite, info):
+    result = []
     sprite_opaque = boolfield.opaque(sprite)
     for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
-        pass
-        #boolfield.()  # TODO: HIER VERDER
+        mask = load_mask(marker)
+        result[dimension] = sprite_opaque.find(marker)[dimension]
+    return result
 
 
+def find_needed_room(sprites):
+    pass  # TODO
+    # make an empty (false) boolfield
+    # Get the sprite if the man and add the pixels to the thing.
 
 
 def erase_mask(surface, position, mask):
