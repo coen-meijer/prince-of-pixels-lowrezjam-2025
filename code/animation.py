@@ -13,11 +13,6 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 
-
-# OPAQUE_WHITE = (255, 255, 255, 255)
-# OPAQUE_BLACK = (0, 0, 0, 255)
-# TRANSPARENT = (0, 0, 0, 0)
-
 class AnimationPlayer:
 
     def __init__(self, animation):
@@ -64,6 +59,14 @@ class Animation:
         return result
 
 
+class AnimationFrame:
+
+    def __init__(self, frame, center, final=False):
+        self.frame = frame
+        self.center = center
+        self.final = final
+
+
 def mirror_state(state):
     if isinstance(state, str):
         if state == "facing_left":
@@ -85,6 +88,7 @@ def mirror_buttons(buttons):
         else:
             result.add(button)
     return result
+
 
 class SpriteSheetCutter:
 
@@ -170,12 +174,14 @@ def find_frame_size(sheet, info):
     lower_right_corner_mask = load_mask("lower-right-frame-corner")
     opaque = info["opaque"]
     corners = opaque.find(lower_right_corner_mask)
+    mask_shape = lower_right_corner_mask.size()
     if not len(corners) == 1:
         raise ValueError(f"The number of corners registered is {len(corners)}, should be 1")
     corner = corners[0]
-    frame_size = (corner[0] + lower_right_corner_mask.size()[0], corner[1] + lower_right_corner_mask.size()[1])
+    frame_size = (corner[0] + mask_shape[0], corner[1] + mask_shape[1])
     info["frame_size"] = frame_size
-    rectangle = pygame.Rect(corner[0], frame_size[0], corner[1], frame_size[1])
+    rectangle = pygame.Rect(corner[0], corner[1], mask_shape[0], mask_shape[1])
+    print(f"rectangle: {rectangle}, sheet size:{sheet.get_size()}")
     sheet.subsurface(rectangle).set_alpha(0)   # hopen dat dit werkt.
     return frame_size
 
