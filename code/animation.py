@@ -12,6 +12,8 @@ MASK_FOLDER = "masks"
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
+POSITION_MARKER_OFFSET = 2
+
 
 class AnimationPlayer:
 
@@ -245,9 +247,12 @@ def read_controller(sheet, info):
 def find_center_marks(sprite, info):
     result = []
     sprite_opaque = boolfield.opaque(sprite)
-    for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
-        mask = load_mask(marker)
-        result[dimension] = sprite_opaque.find(marker)[dimension]
+    horizontal_marker = load_mask("horizontal-center-marker")
+    horizontal_marker_spot = sprite_opaque.find(horizontal_marker)
+    if
+#    for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
+#        mask = load_mask(marker)
+#        result[dimension] = sprite_opaque.find(marker)[0][dimension] + POSITION_MARKER_OFFSET
     return result
 
 
