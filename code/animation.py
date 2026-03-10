@@ -134,20 +134,18 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
 
     try:
         buttons_pressed = read_controller(sprite_sheet, record)
-        print("COULD find the controller!")
+        # print("COULD find the controller!")
         record["buttons"] = buttons_pressed
     except ValueError as err:
         print("couldn't find the controller.", err)
 
-#    more_frames = True
-
     while(True):
         rect = pygame.Rect((pos_x, pos_y), sprite_size)
-        print("trying to cut out frame: ", sprite_sheet, rect)
+        # print("trying to cut out frame: ", sprite_sheet, rect)
         frame = sprite_sheet.subsurface(rect)
         # check if there is something in the frame
         if boolfield.opaque(frame).any():
-            print(frame)
+            # print(frame)
             frames.append(frame.copy())
 
             pos_x += sprite_horizontal
@@ -158,11 +156,15 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
                     break
         else:
             break
+        center = find_center_marks(sprite)
+
 
     frames = frames[1:]   # skip start frame
     record["frame_count"] = len(frames)
     print("from file", sprite_sheet_file, "generated", len(frames))
-    print("info:",record)
+    print("info:")
+    for key, value in record.items():
+        print(f"{key}: {value}")
     return Animation(record, sprites=frames)
 
 
@@ -208,10 +210,10 @@ BUTTON_NAMES = {
 def read_controller(sheet, info):
     print("in read_controller!")
     layout = boolfield.is_char(CONTROLLER_LAYOUT, " ").negative()
-    print(layout)
+    # print(layout)
     opaque = info["opaque"]
     print("opaque:")
-    print(opaque)
+    # print(opaque)
     positions = opaque.find(layout)
     if len(positions) != 1:
         raise ValueError(f"Found {len(positions)} poitions for the controller mask, hoped to find just 1.")
@@ -219,24 +221,24 @@ def read_controller(sheet, info):
     rect = pygame.Rect(positions[0], layout.size())
     controller_patch = pygame.Surface.subsurface(sheet, rect).convert_alpha()
     controller_patch_array = pygame.surfarray.pixels3d(controller_patch)
-    print(f"controller pach array is {controller_patch_array}")
+    #print(f"controller pach array is {controller_patch_array}")
         # sheet[positions[0][0]:positions[0][0] + layout.size()[0],
         #                     positions[0][1]:positions[0][1] + layout.size()[1]]
     buttons_pressed = set()
 
 
     for letter, button in BUTTON_NAMES.items():
-        print("in loop")
+        # print("in loop")
         index = boolfield.is_char(CONTROLLER_LAYOUT, letter)
-        print(f"letter: {letter}, index: {index}")
+        # print(f"letter: {letter}, index: {index}")
         button_pixel_color = controller_patch_array[index.array][0]  # how do i extract the pixel color?
-        print(f"The color of the button {button} is {button_pixel_color}")
+        # print(f"The color of the button {button} is {button_pixel_color}")
         if (button_pixel_color == WHITE).all():
             buttons_pressed.add(button)
         # take a look at pygame.mask - <later>  not quite what i needed
     # erase the buttons
-    print(controller_patch_array)
-    controller_patch.set_alpha(0)
+    # print(controller_patch_array)
+    controller_patch.set_alpha(0)  # is dit afdoende?
     print(f"_____________________________buttons: {buttons_pressed}_____________________________")
     return buttons_pressed
 
@@ -249,10 +251,9 @@ def find_center_marks(sprite, info):
     sprite_opaque = boolfield.opaque(sprite)
     horizontal_marker = load_mask("horizontal-center-marker")
     horizontal_marker_spot = sprite_opaque.find(horizontal_marker)
-    if
-#    for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
-#        mask = load_mask(marker)
-#        result[dimension] = sprite_opaque.find(marker)[0][dimension] + POSITION_MARKER_OFFSET
+    for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
+        mask = load_mask(marker)
+        result[dimension] = sprite_opaque.find(marker)[0][dimension] + POSITION_MARKER_OFFSET
     return result
 
 
