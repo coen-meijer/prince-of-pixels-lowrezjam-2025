@@ -12,13 +12,13 @@ class BoolField:
         assert array.dtype == bool
         self.array = array
 
-    def logical_and(self, other)  -> "BoolField":
+    def logical_and(self, other: "BoolField")  -> "BoolField":
         return BoolField(np.logical_and(self.array, other.array))
 
-    def logical_or(self, other) -> "BoolField":
+    def logical_or(self, other: "BoolField") -> "BoolField":
         return BoolField(np.logical_or(self.array, other.array))
 
-    def logical_xor(self, other) -> "BoolField":
+    def logical_xor(self, other: "BoolField") -> "BoolField":
         return BoolField(np.logical_xor(self.array, other.array))
 
     def window(self, offset, shape) -> "BoolField":
@@ -34,7 +34,7 @@ class BoolField:
     def count(self)  -> int:
         return np.count_nonzero(self.array)
 
-    def find(self, pattern, debug=False) -> list[tuple[int, int]]:
+    def find(self, pattern: "BoolField", debug=False) -> list[tuple[int, int]]:
         matches = []
         self_cols, self_rows = self.array.shape
         pattern_cols, pattern_rows = pattern.array.shape

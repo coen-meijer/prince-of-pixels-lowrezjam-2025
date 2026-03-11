@@ -139,6 +139,8 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
     except ValueError as err:
         print("couldn't find the controller.", err)
 
+    record["frame_info"] = []
+
     while(True):
         rect = pygame.Rect((pos_x, pos_y), sprite_size)
         # print("trying to cut out frame: ", sprite_sheet, rect)
@@ -155,11 +157,15 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
                 if pos_y + sprite_vertical > sheet_vertical:
                     break
         else:
-            break
-        center = find_center_marks(sprite)
+            break  # no more sprites
+
 
 
     frames = frames[1:]   # skip start frame
+    for frame in frames:
+        new_frame_info = {}
+        new_frame_info["center"] = find_center_marks(frame)
+        record["frame_info"].append(new_frame_info)
     record["frame_count"] = len(frames)
     print("from file", sprite_sheet_file, "generated", len(frames))
     print("info:")
@@ -246,14 +252,16 @@ def read_controller(sheet, info):
 # def rect2range(referent, offset, size):
 #    return reverent[]
 
-def find_center_marks(sprite, info):
+def find_center_marks(sprite):
     result = []
     sprite_opaque = boolfield.opaque(sprite)
     horizontal_marker = load_mask("horizontal-center-marker")
     horizontal_marker_spot = sprite_opaque.find(horizontal_marker)
     for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
         mask = load_mask(marker)
-        result[dimension] = sprite_opaque.find(marker)[0][dimension] + POSITION_MARKER_OFFSET
+#        print(mask)
+#        print(sprite_opaque)
+        result.append(sprite_opaque.find(mask)[0][dimension] + POSITION_MARKER_OFFSET)
     return result
 
 
