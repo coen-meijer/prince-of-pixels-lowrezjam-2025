@@ -25,10 +25,11 @@ class AnimationPlayer:
     def get_frame(self):
         #print("frame", self.frame_index, "of", self.animation.frame_count)
         frame = self.animation.sprites[self.frame_index]
+        offset = self.animation.center[self.frame_index]
         self.frame_index += 1
         if self.mirrored:
             frame = pygame.transform.flip(frame, flip_x=True, flip_y=False)
-        return frame, self.frame_index >= self.animation.frame_count
+        return frame, offset, self.frame_index >= self.animation.frame_count
 
 class Animation:
 
@@ -47,6 +48,7 @@ class Animation:
                                               record["frame_count"])
         else:
             self.sprites = sprites
+        self.center = [frame["center"] for frame in record["frame_info"]]
 
     def get_frame_iterator(self):
         return AnimationPlayer(self)
@@ -118,6 +120,10 @@ def sprites_from_sheet(sprite_sheet_file, sprite_size, frame_count):
 
     print("from file", sprite_sheet_file, "generated", len(frames))
     return frames
+
+
+def animation_from_layer_sprite_zip(file):
+    pass
 
 
 def animation_from_annotated_sheet(sprite_sheet_file, record={}):

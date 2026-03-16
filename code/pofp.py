@@ -67,9 +67,9 @@ class PofP:
  #             self.currend_animation_player.frame_index,
  #             self.currend_animation_player.animation.frame_count)
 
-        frame, self.choose_next_animation = self.currend_animation_player.get_frame()
+        frame, offset, self.choose_next_animation = self.currend_animation_player.get_frame()
 
         self.canvas.fill(COLOR)
-        self.canvas.blit(frame, (self.pos_x, self.pos_y))
+        self.canvas.blit(frame, (self.pos_x - offset[0], self.pos_y - offset[1]))
 
         return self.canvas
