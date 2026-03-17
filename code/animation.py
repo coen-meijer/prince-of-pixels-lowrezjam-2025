@@ -61,7 +61,7 @@ class Animation:
         result.end_state = mirror_state(self.end_state)
         result.mirrored = not self.mirrored
         result.buttons = mirror_buttons(self.buttons)
-        result.center = [(self.frame_size[0] - self.center[frame][0], self.frame_size[1] - self.center[frame][1])
+        result.center = [(self.frame_size[0] - self.center[frame][0], self.center[frame][1])
                          for frame in range(self.frame_count)]
         print("mirroring:", self.frame_size, self.center, result.center)
         return result

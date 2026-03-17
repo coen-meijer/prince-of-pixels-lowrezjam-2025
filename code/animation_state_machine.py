@@ -3,7 +3,7 @@ import os
 #TURN = ANIMATION_FOLDER + "/lowrez-short-turn-step.png"
 ANIMATION_FOLDER =  "animaties"
 
-TURN = os.path.join(ANIMATION_FOLDER, "turn-framed-c.png")
+TURN = os.path.join(ANIMATION_FOLDER, "turn-framed-c (1).png")
 WALK = os.path.join(ANIMATION_FOLDER, "walk-framed-c.png")
 STAND = os.path.join(ANIMATION_FOLDER, "stand-framed-c.png")
 
