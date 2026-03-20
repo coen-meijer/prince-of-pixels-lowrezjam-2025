@@ -70,6 +70,9 @@ class PofP:
         frame, offset, self.choose_next_animation = self.currend_animation_player.get_frame()
 
         self.canvas.fill(COLOR)
+        # draw background
+        # cut out the vindow
+        # draw pixel guy
         self.canvas.blit(frame, (self.pos_x - offset[0], self.pos_y - offset[1]))
 
         return self.canvas
