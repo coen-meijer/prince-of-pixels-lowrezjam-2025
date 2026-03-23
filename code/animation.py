@@ -2,7 +2,7 @@ import copy
 
 import pygame
 from code import boolfield
-from code.boolfield import BoolField
+# from code.boolfield import BoolField
 
 import os
 # preconditions: state buttons space
@@ -134,6 +134,7 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
     print(f"reading sheet ======= {record['name']} =======")
     sprite_sheet = pygame.image.load(sprite_sheet_file).convert_alpha()
     record["opaque"] = boolfield.opaque(sprite_sheet)
+    record["opaque-mask"] = pygame.mask.from_surface(sprite_sheet)  # !!!!!!!!!
     frames = []
     sheet_horizontal, sheet_vertical = sprite_sheet.get_size()
     pos_x, pos_y = 0, 0
@@ -156,7 +157,7 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
         # print("trying to cut out frame: ", sprite_sheet, rect)
         frame = sprite_sheet.subsurface(rect)
         # check if there is something in the frame
-        if boolfield.opaque(frame).any():
+        if pygame.mask.from_surface(frame).count() > 0:
             # print(frame)
             frames.append(frame.copy())
 
@@ -184,14 +185,21 @@ def animation_from_annotated_sheet(sprite_sheet_file, record={}):
     return Animation(record, sprites=frames)
 
 
-def load_mask(filename, file_extension=".png"):
+def load_boolfield(filename, file_extension=".png"):
     return boolfield.opaque(pygame.image.load(
         os.path.join(MASK_FOLDER, filename + file_extension)
     ))
 
+def load_mask(filename. file_extension=".png"):
+    return pygame.mask.from_surface(
+        pygame.image.load(
+            os.path.join(MASK_FOLDER, filename + file_extension)
+        )
+    )
+
 
 def find_frame_size(sheet, info):
-    lower_right_corner_mask = load_mask("lower-right-frame-corner")
+    lower_right_corner_mask = load_boolfield("lower-right-frame-corner")
     opaque = info["opaque"]
     corners = opaque.find(lower_right_corner_mask)
     mask_shape = lower_right_corner_mask.size()
@@ -265,10 +273,8 @@ def read_controller(sheet, info):
 def find_center_marks(sprite):
     result = []
     sprite_opaque = boolfield.opaque(sprite)
-    horizontal_marker = load_mask("horizontal-center-marker")
-    horizontal_marker_spot = sprite_opaque.find(horizontal_marker)
     for dimension, marker in enumerate(["horizontal-center-marker", "vertical-center-marker"]):
-        mask = load_mask(marker)
+        mask = load_boolfield(marker)
 #        print(mask)
 #        print(sprite_opaque)
         result.append(sprite_opaque.find(mask)[0][dimension] + POSITION_MARKER_OFFSET)
