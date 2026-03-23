@@ -197,6 +197,10 @@ def load_mask(filename. file_extension=".png"):
         )
     )
 
+def find_mask(needle, haystack):
+    # go throung all the different
+    pass
+
 
 def find_frame_size(sheet, info):
     lower_right_corner_mask = load_boolfield("lower-right-frame-corner")
@@ -293,4 +297,6 @@ def erase_mask(surface, position, mask):
 
 def strings2array(strings):
     return np.array([list(string) for string in strings], dtype="U1")
+
+
 
